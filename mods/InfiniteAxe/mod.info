@@ -1,0 +1,7 @@
+name=Infinite Axe
+id=InfiniteAxe
+description=A magical axe with infinite durability. Never breaks, never dulls. One is granted on load if you do not have it.
+author=
+modversion=2.0
+versionMin=42.13
+category=features

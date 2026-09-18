@@ -233,7 +233,11 @@ item MyKnife {
 **要点**：
 - 物品块用 `属性 = 值,`（等号），配方块用 `属性:值,`（冒号）——**别搞混**
 - **`ItemType = base:<类型>` 是 B42 写法**，B41 的 `Type = Weapon` 已过时。常见值：`base:weapon`、`base:normal`、`base:literature`、`base:food`
+  - **精确分界**：官方参数文档里 `Type` 的废弃记录写着 `replacedBy: ItemType`、`version: 42.13.0`——即**从 B42.13 起 `Type` 被 `ItemType` 取代**
+  - `ItemType` 是**封闭枚举**，共 15 个合法值（`base:alarmclock` / `base:clothing` / `base:container` / `base:drainable` / `base:food` / `base:key` / `base:literature` / `base:map` / `base:moveable` / `base:normal` / `base:radio` / `base:weapon` / `base:weaponpart` 等），**不能用自定义值**（官方原话：*You cannot use a custom class of item*）。**没有 `base:gun`**——枪械也是 `base:weapon`
 - **`Tags` 在 B42 是命名空间化的**（`base:hasmetal`、`base:katana`、`base:sharpenable`），不是 B41 的裸字符串
+  - **合法标签共 459 个**，完整列表见 [Item Tags](https://pz-wiki-modding.github.io/PZ-API-Docs/java/item_tags.html)（该页同时给出对应的 `ItemTag.XXX` Lua 常量名）
+  - 写标签前**先查表**：B41 的不少标签在 B42 没有对应项（例如 `CraftedAxe`），照抄会静默失效
 - `Icon` 指 `media/textures/` 下的 png，不带扩展名（文件名需 `Item_` 前缀，参数值不写）
 - 完整参数表（376 个）见 [脚本文档 item 页](https://pz-wiki-modding.github.io/PZ-API-Docs/scripts/item.html)
 - 做武器时**优先复用原版资源**：`Icon` / `WeaponSprite` / 音效 `event` 直接指向原版，外观手感立刻正确，还省掉美术工作
@@ -345,10 +349,10 @@ end
 | 工具不消耗 | `keep KitchenKnife` | `mode:keep` |
 | 多选一 | `A/B/C` | `[A;B;C]` 或 `tags[...]` |
 | 产出 | `Result:Nails=20` | `outputs { item 20 Base.Nails, }` |
-| **物品类型** | `Type = Weapon` | **`ItemType = base:weapon`** |
-| **物品标签** | `Tags = SharpKnife;HasMetal` | **`Tags = base:sharpknife;base:hasmetal`**（命名空间化） |
+| **物品类型** | `Type = Weapon` | **`ItemType = base:weapon`**（B42.13 起取代） |
+| **物品标签** | `Tags = SharpKnife;HasMetal` | **`Tags = base:sharpknife;base:hasmetal`**（命名空间化，合法值 459 个） |
 | **武器耐久** | 单层 `ConditionMax` | **三层：`Condition` / `HeadCondition` / `Sharpness`**（见附录 B.4） |
-| 翻译文件 | `.txt`（`IG_UI_EN = { ... }`） | **`.json`**（见 §8） |
+| 翻译文件 | `.txt`（`IG_UI_EN = { ... }`） | **`.json`**（**B42.15 起**切换，见 §8） |
 | 工坊结构 | 扁平 | `Contents/mods/<名>/<build.major>/` |
 | 特质 | 直接定义 | 需配 registries |
 
@@ -449,6 +453,8 @@ Events.OnPlayerUpdate.Add(onPlayerUpdate)
 ## 8. 翻译（做中文 mod 必读）
 
 **B42 把翻译文件换成了 JSON**（B41 的 `.txt` 写法已不适用）。`[官方文档]`
+
+> **精确分界**：实测一个同时带 `42.14/` 与 `42.15/` 两个版本目录的工坊 mod，前者翻译文件是 `ItemName_CN.txt`、后者是 `ItemName.json`——**`.txt` → `.json` 的切换发生在 B42.15**。写跨版本兼容的 mod 时要按这个分界分目录放。
 
 存放位置：`media/lua/shared/Translate/<语言码>/`
 
@@ -1015,6 +1021,12 @@ end)
 ```
 
 `ItemContainer` 常用方法（已核实存在）：`AddItem(String)`、`contains(String)`、`containsType(String)`、`getItems()`、`getAllType(String)`。
+
+> **别手写递归翻背包**：引擎自带 `getFirstTypeRecurse(String)` / `getAllTypeRecurse(String)`，会**递归搜索背包内的子容器**（包括背包里的背包）。手写递归不仅多余，还容易漏掉手持物品的情况。判断"玩家身上有没有某物品"用
+> ```lua
+> local has = player:getInventory():getFirstTypeRecurse("ModId.ItemName") ~= nil
+> ```
+> 如果物品可能被拿在手上，还要另外检查 `getPrimaryHandItem()` / `getSecondaryHandItem()`。
 
 ### B.6 运行时改脚本参数：`DoParam()`
 

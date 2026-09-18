@@ -10,13 +10,17 @@ Project Zomboid（僵尸毁灭工程）Build 42 的 mod 开发资料与一个可
 
 ```
 pz-modding/
-├── docs/        中文速查手册（拆分版，12 篇）—— 唯一事实源
-├── handbook/    同一份手册的单文件完整版（由 tools/ 脚本生成）
-├── mods/        示例 mod 源码
-├── tools/       维护脚本
-├── dist/        打包产物（不入库）
-└── .research/   资料缓存（不入库）
+├── docs/          中文速查手册（拆分版，12 篇）—— 唯一事实源
+├── handbook/      同一份手册的单文件完整版（由 tools/ 脚本生成）
+├── mods/          自己的 mod 源码
+├── reference/     自己的资料整理（入库）
+├── tools/         维护脚本
+├── dist/          打包产物（不入库）
+├── .research/     资料缓存（不入库）
+└── third-party/   第三方 mod 样本与对其的分析（不入库，见下）
 ```
+
+> **为什么 `third-party/` 不入库**：那里放的是**别人的 mod**。官方 [Modding Policy](https://projectzomboid.com/blog/modding-policy/) 第 4.1 条：自己研究修改可以，但**未经作者许可不得提交不属于自己的作品**。所以这个目录只留在本地。
 
 ### 📘 `docs/` — 中文速查手册（拆分版）
 
@@ -47,7 +51,22 @@ pz-modding/
 
 > Windows PowerShell 5.1 读取**无 BOM** 的 `.ps1` 会按 ANSI 解码，脚本里的中文会变乱码。本目录的脚本均已保存为 **UTF-8 with BOM**，修改时请保持。
 
-### 🔪 `mods/PristineKatana/` — 示例 mod：不灭武士刀
+### 🔪 `mods/` — 可用的 mod
+
+| mod | 说明 |
+|:---|:---|
+| [`PristineKatana`](mods/PristineKatana) | **不灭武士刀**：永不掉耐久、永不掉锋利度，进游戏自动发放 |
+| [`InfiniteAxe`](mods/InfiniteAxe) | **无限斧头**：同一思路的斧头版，由 B41 旧版迁移到 B42 语法 |
+
+两个 mod 都演示了同一套模式：**复用原版贴图与音效 + 脚本锁死耐久参数 + Lua 补锋利度**。
+
+`InfiniteAxe` 的 [README](mods/InfiniteAxe/README.md) 里有一张 **B41 → B42 迁移对照表**（`Type` → `ItemType`、标签命名空间化、翻译 `.json` 化等），可以直接当迁移清单用。
+
+### 📚 `reference/` — 自己的资料整理
+
+物品 ID 参考表、轻量武器对比等，来源已在文内标注。
+
+### 🔪 `mods/PristineKatana/` — 不灭武士刀
 
 一个完整可用的 B42 mod，添加一把**永不掉耐久、永不掉锋利度**的武士刀，进游戏时若背包里没有会自动发放一把。
 

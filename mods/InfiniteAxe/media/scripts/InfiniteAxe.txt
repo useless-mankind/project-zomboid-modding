@@ -1,0 +1,74 @@
+/**--------------------------------------------------------------------------
+    Infinite Axe - 无限耐久斧头
+
+    外观与音效全部复用原版斧头资源，不新增任何贴图或模型。
+    B42 语法：ItemType = base:weapon，Tags 使用 base: 命名空间。
+    三层耐久（本体 / 刃部 / 锋利度）全部锁死。
+--------------------------------------------------------------------------**/
+
+module InfiniteAxe {
+    imports { Base }
+
+    item InfiniteAxe {
+
+        /*===== 外观与音效：复用原版斧头 =====*/
+        Icon                    = Axe,
+        WeaponSprite            = Axe,
+        HitSound                = AxeHit,
+        SwingSound              = AxeSwing,
+        BreakSound              = AxeBreak,
+
+        /*===== 基础定位（B42：Type 已废弃，必须用 ItemType）=====*/
+        ItemType                = base:weapon,
+        DisplayCategory         = Weapon,
+        SubCategory             = Axe,
+        Categories              = Axe,
+        AttachmentType          = Axe,
+        Weight                  = 2.0,
+        TwoHandWeapon           = FALSE,
+        OtherHandUse            = FALSE,
+        MetalValue              = 200,
+
+        /*===== 动作 =====*/
+        SwingAnim               = Bat,
+        IdleAnim                = Idle_Weapon2,
+        RunAnim                 = Run_Weapon2,
+        BaseSpeed               = 1.0,
+        CloseKillMove           = Jaw_Stab,
+
+        /*===== 攻击数值 =====*/
+        MinDamage               = 1.5,
+        MaxDamage               = 3.0,
+        MinRange                = 0.61,
+        MaxRange                = 1.35,
+        CriticalChance          = 25,
+        CritDmgMultiplier       = 5,
+        PushBackMod             = 0.5,
+        KnockdownMod            = 2,
+        MaxHitCount             = 2,
+        DoorDamage              = 40,
+        TreeDamage              = 35,
+
+        /*===== 核心：永不掉耐久、永不掉锋利度 =====
+           ConditionMax      = 本体耐久池
+           ConditionLowerChanceOneIn = 掉 1 点耐久的概率分母（越大越难掉）
+           刃部同理，倍率设 0 表示永不判定
+           Sharpness         = 锋利度上限，1 即满值
+           ⚠️ 锋利度没有脚本参数能控制损耗，仍需 Lua 兜底（见 client 脚本）
+        ==========================================*/
+        ConditionMax                       = 999999,
+        ConditionLowerChanceOneIn          = 1000000,
+        HeadConditionMax                   = 999999,
+        HeadCondition                      = 999999,
+        HeadConditionLowerChanceMultiplier = 0,
+        Sharpness                          = 1,
+        MultipleHitConditionAffected       = FALSE,
+
+        /*===== 标签（B42 命名空间化，共 459 个合法值）=====
+           原版 CraftedAxe 在 B42 无对应标签，已移除
+        ================================================*/
+        Tags = base:choptree;base:cutplant;base:removebarricade;base:hasmetal;base:blade,
+
+        Tooltip = Tooltip_InfiniteAxe,
+    }
+}
