@@ -18,7 +18,7 @@ Project Zomboid（僵尸毁灭工程）Build 42 的 mod 开发资料与一个可
 - **`craftRecipe` 完整语法**：`inputs` / `outputs` / `mode:keep` / `tags[...]` / `flags[...]`
 - **调试流程**：`-debug` + Alternate launch、`console.txt` 定位报错
 - **踩坑清单**：10 条新手最常卡住的地方
-- **附录 B（数据获取方法论）**：本机网络环境下哪些资料源可用、怎么绕行、怎么查 API 是否存在
+- **附录 B（数据获取方法论）**：原版脚本不公开，怎么把数据搞到手——资料源清单、找原版定义的手法、查 API 是否存在的流程
 
 👉 **[进入手册目录](docs/README.md)**
 
@@ -65,7 +65,7 @@ Project Zomboid（僵尸毁灭工程）Build 42 的 mod 开发资料与一个可
 
 ### ⚠️ 未经真机验证
 
-手册与 mod 均**没有在本机实机运行过**（开发机未安装游戏）。已完成静态校验：
+手册与 mod 均**尚未在真实游戏中运行验证**。已完成静态校验：
 
 - 文件编码 UTF-8 无 BOM（PZ 对 BOM 敏感）
 - 脚本花括号配平、Lua 块结构配平（`end` = `function` + `if` + `for`）
