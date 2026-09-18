@@ -1,0 +1,7 @@
+name=Pristine Katana
+id=PristineKatana
+description=Adds a katana that never loses durability, blade condition or sharpness. One is granted automatically on load if you do not already have it.
+author=
+modversion=1.0
+versionMin=42.0
+category=features
