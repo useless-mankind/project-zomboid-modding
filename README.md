@@ -6,21 +6,46 @@ Project Zomboid（僵尸毁灭工程）Build 42 的 mod 开发资料与一个可
 
 ---
 
-## 仓库内容
+## 仓库结构
 
-### 📘 `docs/` — 中文速查手册
+```
+pz-modding/
+├── docs/        中文速查手册（拆分版，12 篇）—— 唯一事实源
+├── handbook/    同一份手册的单文件完整版（由 tools/ 脚本生成）
+├── mods/        示例 mod 源码
+├── tools/       维护脚本
+├── dist/        打包产物（不入库）
+└── .research/   资料缓存（不入库）
+```
 
-面向中文 modder 的 B42 开发手册，11 篇。**以官方 Javadoc 与社区自动生成的 API 文档为准**，刻意避开了网上大量仍是 B41 时代的二手教程。
+### 📘 `docs/` — 中文速查手册（拆分版）
+
+面向中文 modder 的 B42 开发手册，12 篇。**以官方 Javadoc 与社区自动生成的 API 文档为准**，刻意避开了网上大量仍是 B41 时代的二手教程。
 
 重点内容：
 
 - **B42 的破坏性变更**：`recipe` → `craftRecipe`、单层耐久 → 三层耐久、`.txt` 翻译 → `.json`、工坊目录分层
 - **`craftRecipe` 完整语法**：`inputs` / `outputs` / `mode:keep` / `tags[...]` / `flags[...]`
+- **枪械与弹药系统**：两种装填模式、枪械参数、弹药 API，以及"无限弹药"的四条实现路径
 - **调试流程**：`-debug` + Alternate launch、`console.txt` 定位报错
 - **踩坑清单**：10 条新手最常卡住的地方
 - **附录 B（数据获取方法论）**：原版脚本不公开，怎么把数据搞到手——资料源清单、找原版定义的手法、查 API 是否存在的流程
 
 👉 **[进入手册目录](docs/README.md)**
+
+### 📖 `handbook/` — 单文件完整版
+
+同样的内容合成一个文件，方便离线阅读与全文搜索。
+
+> **`docs/` 是唯一事实源。** 改完 `docs/` 后运行 `tools/sync-handbook.ps1` 重新生成单文件版，**不要直接编辑 `handbook/` 里的文件**——下次同步会被覆盖。
+
+### 🔧 `tools/` — 维护脚本
+
+| 脚本 | 用途 |
+|:---|:---|
+| `sync-handbook.ps1` | 从 `docs/` 重建 `handbook/` 单文件版 |
+
+> Windows PowerShell 5.1 读取**无 BOM** 的 `.ps1` 会按 ANSI 解码，脚本里的中文会变乱码。本目录的脚本均已保存为 **UTF-8 with BOM**，修改时请保持。
 
 ### 🔪 `mods/PristineKatana/` — 示例 mod：不灭武士刀
 
