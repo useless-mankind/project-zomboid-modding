@@ -12,15 +12,18 @@ Project Zomboid（僵尸毁灭工程）Build 42 的 mod 开发资料与一个可
 pz-modding/
 ├── docs/          中文速查手册（拆分版，12 篇）—— 唯一事实源
 ├── handbook/      同一份手册的单文件完整版（由 tools/ 脚本生成）
-├── mods/          自己的 mod 源码
+├── mods/          自己的 mod 源码（示例 mod + 本地开发中的派生工程）
+├── analysis/      对某个 mod 的整理与分析文档（入库）
 ├── reference/     自己的资料整理（入库）
 ├── tools/         维护脚本
 ├── dist/          打包产物（不入库）
 ├── .research/     资料缓存（不入库）
-└── third-party/   第三方 mod 样本与对其的分析（不入库，见下）
+└── third-party/   第三方 mod 原始样本（不入库，见下）
 ```
 
-> **为什么 `third-party/` 不入库**：那里放的是**别人的 mod**。官方 [Modding Policy](https://projectzomboid.com/blog/modding-policy/) 第 4.1 条：自己研究修改可以，但**未经作者许可不得提交不属于自己的作品**。所以这个目录只留在本地。
+> **为什么 `third-party/` 与 `mods/myspatialrefuge/` 不入库**：那里放的是**别人的 mod**（原始包与基于它的派生开发）。官方 [Modding Policy](https://projectzomboid.com/blog/modding-policy/) 第 4.1 条：自己研究修改可以，但**未经作者许可不得提交不属于自己的作品**。所以这两处只留在本地。
+>
+> 派生工程 `mods/myspatialrefuge/` 内部**自带一个独立的本地 git 仓库**（不推远端），用它做本地版本历史与回滚，弥补被 `.gitignore` 排除后没有版本控制的问题。
 
 ### 📘 `docs/` — 中文速查手册（拆分版）
 
@@ -48,6 +51,7 @@ pz-modding/
 | 脚本 | 用途 |
 |:---|:---|
 | `sync-handbook.ps1` | 从 `docs/` 重建 `handbook/` 单文件版 |
+| `deploy-mod.ps1` | 把 `mods/<名>/` 部署到 `Zomboid\mods\`（拷贝或目录联结），供游戏内实测 |
 
 > Windows PowerShell 5.1 读取**无 BOM** 的 `.ps1` 会按 ANSI 解码，脚本里的中文会变乱码。本目录的脚本均已保存为 **UTF-8 with BOM**，修改时请保持。
 
@@ -61,6 +65,24 @@ pz-modding/
 两个 mod 都演示了同一套模式：**复用原版贴图与音效 + 脚本锁死耐久参数 + Lua 补锋利度**。
 
 `InfiniteAxe` 的 [README](mods/InfiniteAxe/README.md) 里有一张 **B41 → B42 迁移对照表**（`Type` → `ItemType`、标签命名空间化、翻译 `.json` 化等），可以直接当迁移清单用。
+
+### 🧪 `mods/myspatialrefuge/` — 本地开发工程（不入库）
+
+以第三方 mod **My Spatial Refuge** 为基础继续开发的工程，**本地自用、不发布**。
+
+- **扁平开发结构**：`mod.info` + `media/`（本地开发用这个，只有上传工坊才需要 `Contents/mods/<名>/<build.major>/` 那层壳）
+- **单一目标版本**：B42.15 及以上，翻译用 `.json`（已丢弃 42.14 的 `.txt` 那套）
+- **可直接部署**：`tools/deploy-mod.ps1` 一条命令拷进 `Zomboid\mods\`
+- **原始工坊包快照**保留在 `third-party/myspatialrefuge-workshop/`（只读），用于 diff 与回滚
+- 内部脚本改动记录、目标版本、多人模式说明见该目录下的 `FORK-NOTES.md`
+
+> ⚠️ 这个目录在 `.gitignore` 里，**外层仓库不管它**；它自带一个独立的本地 git 仓库，`cd mods/myspatialrefuge && git log` 查看改动历史。
+
+### 🔍 `analysis/` — mod 分析文档
+
+对某个 mod 的完整整理（架构、数据模型、扩展点、已知问题），每个 mod 一个子目录。**不含任何第三方源码，只有我方的描述与行号引用**，因此入库；原样本本身仍留在 `third-party/`。
+
+当前：[`analysis/myspatialrefuge/`](analysis/myspatialrefuge) —— My Spatial Refuge 的现状整理 + 服务端/客户端/配置数据三份子系统详解 + 多人模式边界说明。
 
 ### 📚 `reference/` — 自己的资料整理
 
