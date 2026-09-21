@@ -287,7 +287,7 @@
 | Base.Generator_Yellow | 发电机 Premium Technologies | ✅ 已确认（作为 substitute） |
 | Base.Generator_Blue | 发电机 ValuTech | ✅ 已确认（作为 substitute） |
 | Base.Generator_Old | 发电机 Old | ✅ 已确认（作为 substitute） |
-| Base.LightBulb | 灯泡 | ✅ 已确认 |
+| ~~Base.LightBulb~~ | 灯泡 | ⚠️ **已不再使用**：2026-09-21 移除照明功能，`refuge_power` 不再消耗灯泡（配方改为 发电机 + 电线 + 核心） |
 | Base.ElectricWire | 电线（B42 新版） | ✅ 已确认 |
 | Base.MetalPipe | 铁管（Iron Pipe） | ✅ 已确认 |
 | Base.Nails | 钉子 | ✅ 已确认 |
