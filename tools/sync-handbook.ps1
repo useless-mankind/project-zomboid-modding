@@ -65,7 +65,7 @@ if ($splitAt -lt 0) { throw '在 07-调试与发布.md 中找不到 §11 标题'
 $d07a = $d07[0..($splitAt - 1)]
 $d07b = $d07[$splitAt..($d07.Count - 1)]
 
-# 组装顺序：§0–§9 → §10 → §11 → §12 → 附录 A → 附录 B → 待确认 → 附录 C
+# 组装顺序：§0–§9 → §10 → §11 → §12 → §13 → 附录 A → 附录 B → 待确认 → 附录 C
 $order = @(
     @{ doc = '01-快速起步与环境.md';    part = 'all' },
     @{ doc = '02-Mod类型与选题.md';      part = 'all' },
@@ -77,6 +77,7 @@ $order = @(
     @{ doc = '08-踩坑清单.md';           part = 'all' },
     @{ doc = '07-调试与发布.md';         part = 'b'   },
     @{ doc = '12-枪械与弹药系统.md';     part = 'all' },
+    @{ doc = '13-大型mod工程结构.md';    part = 'all' },
     @{ doc = '09-模板生成脚本.md';       part = 'all' },
     @{ doc = '10-数据获取与研究设施.md'; part = 'all' },
     @{ doc = '11-参考资料与待确认.md';   part = 'all' }
