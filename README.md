@@ -61,6 +61,10 @@ pz-modding/
 
 开发的进展：合并不灭武士刀、新增「兑换」标签（断武器翻新 / 珍品兑换）。
 
+> 🔧 **想加内容？绝大多数情况只碰一个文件**：`mods/myspatialrefuge/media/lua/shared/exchanges.yaml`（**它的头部注释就是速查表**，含三种加法与查物品 ID 的办法）。
+> 改**升级**用同目录的 `upgrades.yaml`；改**水井等定制**看 `media/lua/shared/00_core/Config.lua` 的 `SPATIAL_WELL`。
+> ⚠️ **别删 `media/lua/server/`** —— 它在单机也加载，承担僵尸掉核心 / 自动拾取 / 水井补水 / 肥沃共鸣 / 衰减回收，删了会弄坏单机（依据 `analysis/myspatialrefuge/04-多人模式与单人的边界.md`）。
+
 - **扁平开发结构**：`mod.info` + `media/`（本地开发用这个，只有上传工坊才需要 `Contents/mods/<名>/<build.major>/` 那层壳）
 - **单一目标版本**：B42.15 及以上，翻译用 `.json`（已丢弃 42.14 的 `.txt` 那套）
 - **可直接部署**：`tools/deploy-mod.ps1` 一条命令拷进 `Zomboid\mods\`
