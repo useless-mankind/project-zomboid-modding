@@ -59,10 +59,16 @@ pz-modding/
 
 以第三方 mod **My Spatial Refuge** 为基础继续开发的工程，**本地自用、不发布**。公开仓库里 `mods/` 是空的——这里的内容全部被 `.gitignore` 排除。
 
-开发的进展：合并不灭武士刀、新增「兑换」标签（断武器翻新 / 珍品兑换）。
+开发的进展：合并不灭武士刀、新增「兑换」标签（断武器翻新 / 珍品兑换）、把「定制」重构成数据驱动的可建造物框架。
 
-> 🔧 **想加内容？绝大多数情况只碰一个文件**：`mods/myspatialrefuge/media/lua/shared/exchanges.yaml`（**它的头部注释就是速查表**，含三种加法与查物品 ID 的办法）。
-> 改**升级**用同目录的 `upgrades.yaml`；改**水井等定制**看 `media/lua/shared/00_core/Config.lua` 的 `SPATIAL_WELL`。
+> 🔧 **想加内容？** 三个入口：
+>
+> | 想加什么 | 改哪里 |
+> |:---|:---|
+> | **兑换项 / 断武器翻新** | `mods/myspatialrefuge/media/lua/shared/exchanges.yaml`（**头部注释就是速查表**，含三种加法与查物品 ID 的办法） |
+> | **升级** | 同目录 `upgrades.yaml`（`expand_refuge` 例外，在 `MSR_UpgradeData.lua`） |
+> | **可建造物**（工作台 / 储物箱…） | `media/lua/shared/MSR_BuildableData.lua` 加一条注册项 —— **面板与光标已数据驱动，不用改 UI** |
+>
 > ⚠️ **别删 `media/lua/server/`** —— 它在单机也加载，承担僵尸掉核心 / 自动拾取 / 水井补水 / 肥沃共鸣 / 衰减回收，删了会弄坏单机（依据 `analysis/myspatialrefuge/04-多人模式与单人的边界.md`）。
 
 - **扁平开发结构**：`mod.info` + `media/`（本地开发用这个，只有上传工坊才需要 `Contents/mods/<名>/<build.major>/` 那层壳）
