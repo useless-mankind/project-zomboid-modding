@@ -55,7 +55,7 @@
 
 ## 相关
 
-- 本仓库附带的示例 mod：[`mods/PristineKatana`](../mods/PristineKatana)（不灭武士刀）
+- 真实大型 mod 的完整分析：[`analysis/myspatialrefuge/`](../analysis/myspatialrefuge)（含架构索引、多人模式边界、升级清单、兑换系统设计）
 - 第三方来源与授权：[CREDITS.md](../CREDITS.md)
 
 > :book: [返回仓库首页](../README.md)

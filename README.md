@@ -1,6 +1,6 @@
-# Project Zomboid Modding · 手册与示例 mod
+# Project Zomboid Modding · 中文手册与实战分析
 
-Project Zomboid（僵尸毁灭工程）Build 42 的 mod 开发资料与一个可直接使用的示例 mod。
+Project Zomboid（僵尸毁灭工程）Build 42 的 mod 开发中文手册，外加对一个真实大型 mod 的完整架构分析，以及基于它的本地开发工程（不入库）。
 
 > 全部内容基于 **Build 42.20.x**（B42 于 2026-07-29 转入 Stable 分支）整理，2026-09。
 
@@ -10,12 +10,12 @@ Project Zomboid（僵尸毁灭工程）Build 42 的 mod 开发资料与一个可
 
 ```
 pz-modding/
-├── docs/          中文速查手册（拆分版，12 篇）—— 唯一事实源
+├── docs/          中文速查手册（拆分版，13 篇）—— 唯一事实源
 ├── handbook/      同一份手册的单文件完整版（由 tools/ 脚本生成）
-├── mods/          自己的 mod 源码（示例 mod + 本地开发中的派生工程）
 ├── analysis/      对某个 mod 的整理与分析文档（入库）
 ├── reference/     自己的资料整理（入库）
 ├── tools/         维护脚本
+├── mods/          本地开发工程（派生工程，**不入库**）
 ├── dist/          打包产物（不入库）
 ├── .research/     资料缓存（不入库）
 └── third-party/   第三方 mod 原始样本（不入库，见下）
@@ -55,28 +55,21 @@ pz-modding/
 
 > Windows PowerShell 5.1 读取**无 BOM** 的 `.ps1` 会按 ANSI 解码，脚本里的中文会变乱码。本目录的脚本均已保存为 **UTF-8 with BOM**，修改时请保持。
 
-### 🔪 `mods/` — 可用的 mod
-
-| mod | 说明 |
-|:---|:---|
-| [`PristineKatana`](mods/PristineKatana) | **不灭武士刀**：永不掉耐久、永不掉锋利度，进游戏自动发放 |
-| [`InfiniteAxe`](mods/InfiniteAxe) | **无限斧头**：同一思路的斧头版，由 B41 旧版迁移到 B42 语法 |
-
-两个 mod 都演示了同一套模式：**复用原版贴图与音效 + 脚本锁死耐久参数 + Lua 补锋利度**。
-
-`InfiniteAxe` 的 [README](mods/InfiniteAxe/README.md) 里有一张 **B41 → B42 迁移对照表**（`Type` → `ItemType`、标签命名空间化、翻译 `.json` 化等），可以直接当迁移清单用。
-
 ### 🧪 `mods/myspatialrefuge/` — 本地开发工程（不入库）
 
-以第三方 mod **My Spatial Refuge** 为基础继续开发的工程，**本地自用、不发布**。
+以第三方 mod **My Spatial Refuge** 为基础继续开发的工程，**本地自用、不发布**。公开仓库里 `mods/` 是空的——这里的内容全部被 `.gitignore` 排除。
+
+开发的进展：合并不灭武士刀、新增「兑换」标签（断武器翻新 / 珍品兑换）。
 
 - **扁平开发结构**：`mod.info` + `media/`（本地开发用这个，只有上传工坊才需要 `Contents/mods/<名>/<build.major>/` 那层壳）
 - **单一目标版本**：B42.15 及以上，翻译用 `.json`（已丢弃 42.14 的 `.txt` 那套）
 - **可直接部署**：`tools/deploy-mod.ps1` 一条命令拷进 `Zomboid\mods\`
 - **原始工坊包快照**保留在 `third-party/myspatialrefuge-workshop/`（只读），用于 diff 与回滚
-- 内部脚本改动记录、目标版本、多人模式说明见该目录下的 `FORK-NOTES.md`
+- 改动记录、目标版本、多人模式说明见该目录下的 `FORK-NOTES.md`
 
 > ⚠️ 这个目录在 `.gitignore` 里，**外层仓库不管它**；它自带一个独立的本地 git 仓库，`cd mods/myspatialrefuge && git log` 查看改动历史。
+
+> 📌 **曾经的示例 mod**：`PristineKatana`（不灭武士刀）与 `InfiniteAxe`（无限斧头）已于 2026-09-21 删除。前者合并进了上面的开发工程（物品 ID 未变），后者连同它的 B41→B42 迁移资料一并移除——迁移要点已完整收录在手册 [§6.4 B41 → B42 差异速查](docs/04-脚本层-物品与配方.md)。
 
 ### 🔍 `analysis/` — mod 分析文档
 
@@ -88,50 +81,13 @@ pz-modding/
 
 物品 ID 参考表、轻量武器对比等，来源已在文内标注。
 
-### 🔪 `mods/PristineKatana/` — 不灭武士刀
-
-一个完整可用的 B42 mod，添加一把**永不掉耐久、永不掉锋利度**的武士刀，进游戏时若背包里没有会自动发放一把。
-
-它同时是一份**可参照的实现范例**，演示了：
-
-| 演示点 | 说明 |
-|:---|:---|
-| 复用原版资源 | `Icon` / `WeaponSprite` / 音效 `event` 全部指向原版武士刀，**不新增任何贴图模型** |
-| B42 物品语法 | `ItemType = base:weapon`、命名空间化的 `Tags = base:katana;...` |
-| 三层耐久控制 | `Condition*` / `HeadCondition*` / `Sharpness` |
-| 脚本做不到的部分用 Lua 兜底 | **锋利度没有任何脚本参数能控制损耗**，只能用 `applyMaxSharpness()` |
-| 发放物品给玩家 | `ItemContainer:AddItem()` + 递归查背包，幂等 |
-| 中文翻译 | `media/lua/shared/Translate/CN/ItemName.json` |
-
----
-
-## 安装 PristineKatana
-
-1. 把 `mods/PristineKatana/` 整个文件夹复制到：
-
-   ```
-   C:\Users\<你的用户名>\Zomboid\mods\
-   ```
-
-   复制后路径应为 `...\Zomboid\mods\PristineKatana\mod.info`
-
-2. 启动游戏 → 主菜单 **Mods** → 勾选 **Pristine Katana**
-
-3. 读档进入游戏。若背包里没有这把刀，会**自动获得一把**。
-
-**验证是否加载成功**：查看 `C:\Users\<你>\Zomboid\console.txt`，应出现
-
-```
-[PristineKatana] loaded - 不灭武士刀已加载
-```
-
 ---
 
 ## 两项重要声明
 
 ### ⚠️ 未经真机验证
 
-手册与 mod 均**尚未在真实游戏中运行验证**。已完成静态校验：
+手册内容与开发工程里的脚本均**尚未在真实游戏中运行验证**。已完成静态校验：
 
 - 文件编码 UTF-8 无 BOM（PZ 对 BOM 敏感）
 - 脚本花括号配平、Lua 块结构配平（`end` = `function` + `if` + `for`）
@@ -141,7 +97,7 @@ pz-modding/
 
 ### 📄 不含游戏素材
 
-本仓库**不包含 Project Zomboid 的任何美术、音频或数据文件**。`PristineKatana` 只是在脚本中*按名称引用*原版贴图与音效事件，游戏运行时会从玩家自己的安装中读取。
+本仓库**不包含 Project Zomboid 的任何美术、音频或数据文件**，也不包含任何 mod 源码。手册与文档只在文字中*按名称引用*原版贴图与音效事件，游戏运行时会从玩家自己的安装中读取。
 
 Project Zomboid 及其全部内容版权归 The Indie Stone 所有。本项目为非官方粉丝作品，与 The Indie Stone 无关联。
 
@@ -151,4 +107,4 @@ Project Zomboid 及其全部内容版权归 The Indie Stone 所有。本项目�
 
 ## 授权
 
-[MIT](LICENSE)（`mods/PristineKatana` 派生自同为 MIT 协议的第三方 mod，其版权声明见 [CREDITS.md](CREDITS.md)）
+[MIT](LICENSE)

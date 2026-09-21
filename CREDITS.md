@@ -1,12 +1,13 @@
 # 第三方来源与授权 / Credits & Third-Party Notices
 
-本项目包含**派生自第三方 MIT 协议作品的代码**。依 MIT 协议要求，其版权声明与许可原文完整保留在下方。
+> **公开仓库现状（2026-09-21 起）**：本仓库**不再包含任何 mod 源码**，只含手册、文档与我方撰写的分析。原先随仓库分发的示例 mod `PristineKatana` 与 `InfiniteAxe` 已删除。
+> 下面 §1 的声明**继续保留**，因为派生代码仍存在于**本地未入库**的开发工程 `mods/myspatialrefuge/`（不随本仓库发布），依 MIT 协议该声明必须随之保留。
 
 ---
 
 ## 1. 代码派生来源（MIT，必须保留声明）
 
-`mods/PristineKatana/media/scripts/PristineKatana.txt` 中的物品定义，其**参数结构与资源引用方式**派生自以下项目：
+`mods/myspatialrefuge/media/scripts/PristineKatana.txt`（本地开发工程，**不入库**；原为 `mods/PristineKatana/`，2026-09-21 合并后删除）中的物品定义，其**参数结构与资源引用方式**派生自以下项目：
 
 - **项目**：[micksatana/pz-mod-michonnes-katana](https://github.com/micksatana/pz-mod-michonnes-katana)（Michonne's Katana）
 - **作者**：Satana Charuwichitratana

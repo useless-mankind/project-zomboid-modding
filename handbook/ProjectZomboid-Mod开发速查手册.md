@@ -1225,7 +1225,7 @@ $h = Get-Content "$dir\InventoryItem.html" -Raw -Encoding UTF8
 
 ### B.5 新物品 mod 的起手清单
 
-基于 `PristineKatana`（`D:\000 - AI\PristineKatana\`）这份可用实现：
+基于做「不灭武士刀」时的那份可用实现（该 mod 现已合并进本地开发工程 `mods/myspatialrefuge/`，**不入库**，本仓库不再分发 mod 源码）：
 
 ```
 <ModId>/
@@ -1306,7 +1306,7 @@ item:DoParam("ConditionLowerChanceOneIn = 1000000")
 1. **`versionMin` / `versionMax` 不写会怎样** —— 样本 `micksatana` 两个版本目录都没写，游戏显然正常加载；所以这组字段是"可选覆盖"而非"必需"，但**确切语义（是门控还是仅提示）未实测**
 2. **软覆盖（Soft Override）的确切语义** —— 建议避开，改用 `DoParam()` 或复制整段定义
 3. Lua 热重载的确切边界 —— 调试模式下的重载能力未实测
-4. **本手册与 `PristineKatana` mod 均未在真机验证过**（编写环境未安装游戏）。文件编码、括号配平、Lua 块结构（`end` = `function`+`if`+`for`）已静态校验，但**运行时行为只有游戏里能确认**
+4. **本手册内容与开发工程里的脚本均未在真机验证过**（编写环境未安装游戏）。文件编码、括号配平、Lua 块结构（`end` = `function`+`if`+`for`）已静态校验，但**运行时行为只有游戏里能确认**
 5. 原版 `Base.Katana` 的**完整脚本原文**始终没拿到（原版脚本不公开）。手册里的武士刀数值来自 42.20.2 的第三方数据源 + 成熟 mod 的结构参数，属**高可信但非原版逐字**
 
 ---
